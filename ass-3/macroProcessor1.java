@@ -4,21 +4,22 @@ import java.util.*;
 public class macroProcessor1 {
     static class MacroDefinition {
         String name;
+        int mdtIndex;
         List<String> definition;
 
-        MacroDefinition(String name) {
+        MacroDefinition(String name, int mdtIndex) {
             this.name = name;
+            this.mdtIndex = mdtIndex;
             this.definition = new ArrayList<>();
         }
     }
     
     private static final Map<String, MacroDefinition> MNT = new LinkedHashMap<>();
     private static final List<String> MDT = new ArrayList<>();
-    private static int MNTC = 0;
     private static int MDTC = 0;
 
     public static void pass1(List<String> sourceCode) {
-        boolean isMacroDefinition = false; // Fixed typo
+        boolean isMacroDefinition = false;
         MacroDefinition currentMacro = null;
 
         for (String line : sourceCode) {
@@ -28,9 +29,8 @@ public class macroProcessor1 {
                 isMacroDefinition = true;
             } else if (isMacroDefinition && !tokens[0].equalsIgnoreCase("MEND")) {
                 if (currentMacro == null) {
-                    currentMacro = new MacroDefinition(tokens[0]);
+                    currentMacro = new MacroDefinition(tokens[0], MDTC + 1);
                     MNT.put(tokens[0], currentMacro);
-                    MNTC++;
                 }
                 currentMacro.definition.add(line);
             } else if (tokens[0].equalsIgnoreCase("MEND")) {
@@ -57,9 +57,12 @@ public class macroProcessor1 {
     }
 
     public static void displayTables() {
-        System.out.println("\nMacro Name Table (MNT) [Total: " + MNTC + "]:");
-        for (String macro : MNT.keySet()) {
-            System.out.println(macro);
+        System.out.println("\nMacro Name Table (MNT) [Total: " + MNT.size() + "]:");
+        System.out.println("Index\tMacro Name\tMDT Index");
+        int index = 1;
+        for (Map.Entry<String, MacroDefinition> entry : MNT.entrySet()) {
+            System.out.println(index + "\t" + entry.getKey() + "\t" + entry.getValue().mdtIndex);
+            index++;
         }
 
         System.out.println("\nMacro Definition Table (MDT) [Total: " + MDTC + "]:");
@@ -71,8 +74,8 @@ public class macroProcessor1 {
     public static void main(String[] args) {
         try {
             List<String> sourceCode = readFromFile("input.txt");
-            pass1(sourceCode);  // Call pass1 to process macros
-            displayTables();  // Display tables after processing
+            pass1(sourceCode);
+            displayTables();
         } catch (IOException e) {
             System.err.println("Error reading input file: " + e.getMessage());
         }
