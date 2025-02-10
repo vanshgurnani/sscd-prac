@@ -1,0 +1,4 @@
+1 ADD &ARG, B
+2 MEND
+3 SUB &ARG, B
+4 MEND
