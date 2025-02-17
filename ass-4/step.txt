@@ -1,0 +1,9 @@
+Create an empty list (expandedCode) to store expanded instructions.
+Iterate over macro calls in the Actual Argument List (ALP).
+Check if the macro exists in the Macro Name Table (MNT).
+Retrieve the macro’s definition index from the Macro Definition Table (MDT).
+Loop through MDT entries starting from the retrieved index.
+Replace formal parameters (ALA) with actual arguments (ALP).
+Stop when "MEND" is found (end of macro definition).
+Add the expanded instruction to the output list.
+Return the fully expanded code.
