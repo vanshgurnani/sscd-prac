@@ -2,19 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Global variables
 int i = 0;
-char str[100], tp;
+char str[100] = "(id+id)*id";  // Hardcoded expression
+char tp;
 
+// Function prototypes
+void advance();
+void E();
+void EPrime();
+void T();
+void TPrime();
+void F();
+
+// Advance to the next character in the input string
 void advance() {
     tp = str[i++];
 }
 
-void E();
-void F();
-void T();
-void TPrime();
-void EPrime();
-
+// F → id | (E)
 void F() {
     if (tp == 'i') {
         advance();
@@ -39,11 +45,13 @@ void F() {
     }
 }
 
+// T → F T'
 void T() {
     F();
     TPrime();
 }
 
+// T' → * F T' | ε
 void TPrime() {
     if (tp == '*') {
         advance();
@@ -52,11 +60,13 @@ void TPrime() {
     }
 }
 
+// E → T E'
 void E() {
     T();
     EPrime();
 }
 
+// E' → + T E' | ε
 void EPrime() {
     if (tp == '+') {
         advance();
@@ -65,14 +75,11 @@ void EPrime() {
     }
 }
 
+// Main function
 int main() {
-    printf("Enter the string (infix expression): ");
-    fgets(str, 100, stdin);
+    printf("Input string: %s\n", str);
 
-    // Remove newline character if present
-    str[strcspn(str, "\n")] = '\0';
-
-    advance();
+    advance();  // Start parsing
     E();
 
     if (tp == '\0') {
