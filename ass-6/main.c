@@ -7,6 +7,16 @@ int i = 0;
 char str[100] = "(id+id)*id";  // Hardcoded expression
 char tp;
 
+// E → T E'
+
+// E' → + T E' | ε
+
+// T → F T'
+
+// T' → * F T' | ε
+
+// F → ( E ) | id
+
 // Function prototypes
 void advance();
 void E();
