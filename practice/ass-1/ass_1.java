@@ -1,9 +1,9 @@
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
-public class assembler {
+public class ass_1 {
     public static void main(String[] args) {
-        // Opcode Table
+        System.out.println("Hello, World!");
         HashMap<String, String[]> opcodeTab = new HashMap<>();
         opcodeTab.put("STOP", new String[]{"IS", "00"});
         opcodeTab.put("ADD", new String[]{"IS", "01"});
@@ -22,25 +22,26 @@ public class assembler {
         opcodeTab.put("END", new String[]{"AD", "02"});
         opcodeTab.put("ORIGIN", new String[]{"AD", "03"});
 
-        // Register Table
         HashMap<String, String> registerTab = new HashMap<>();
         registerTab.put("AREG", "1");
         registerTab.put("BREG", "2");
         registerTab.put("CREG", "3");
         registerTab.put("DREG", "4");
 
-        String filepath = "input.txt";
+        HashMap<String, Integer> symbolTable = new HashMap<>();
         int locationCounter = 0;
 
-        // Symbol Table
-        HashMap<String, Integer> symbolTable = new HashMap<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+
+
+        String filename = "input.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
 
-            while ((line = br.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty()) continue;
+                if(line.isEmpty()) continue;
 
                 String[] tokens = line.split("\\s+");
                 int tokenCount = tokens.length;
@@ -52,57 +53,65 @@ public class assembler {
                 String operand2 = "";
                 String label = null;
 
-                if (opcodeTab.containsKey(tokens[0])) {
+                if(opcodeTab.containsKey(tokens[0])){
                     instruction = tokens[0];
-                    if (tokenCount > 1) operand1 = tokens[1];
-                    if (tokenCount > 2) operand2 = tokens[2];
-                } else {
+                    if(tokenCount > 1){
+                        operand1 = tokens[1];
+                    } 
+                    if (tokenCount > 2){
+                        operand2 = tokens[2];
+                    }   
+                }
+                else {
                     label = tokens[0];
-                    if (tokenCount > 1) instruction = tokens[1];
-                    if (tokenCount > 2) operand1 = tokens[2];
-                    if (tokenCount > 3) operand2 = tokens[3];
+                    if(tokenCount > 1) instruction = tokens[1];
+                    if(tokenCount > 2) operand1 = tokens[2];
+                    if(tokenCount > 3) operand2 = tokens[3];
                 }
 
-                if ("START".equals(instruction)) {
+                if("START".equals(instruction)){
                     locationCounter = operand1.isEmpty() ? 0 : Integer.parseInt(operand1);
                     continue;
                 }
 
-                if ("ORIGIN".equals(instruction)) {
-                    locationCounter = Integer.parseInt(operand1);
+                if("ORIGIN".equals(instruction)){
+                    locationCounter = operand1.isEmpty() ? 0 : Integer.parseInt(operand1);
                     continue;
                 }
 
-                if ("END".equals(instruction)) {
+                if("END".equals(instruction)){
                     break;
                 }
 
-                if (label != null) {
-                    if (!symbolTable.containsKey(label)) {
+                if(label!= null){
+                    if(!symbolTable.containsKey(label)){
                         symbolTable.put(label, locationCounter);
                     }
                 }
 
-                if (opcodeTab.containsKey(instruction)) {
-                    if (instruction.equals("DC")) {
-                        locationCounter++;
-                    } else if (instruction.equals("DS")) {
+                if(opcodeTab.containsKey(instruction)){
+                    if(instruction.equals("DC")){
+                        locationCounter += 1;
+                    } 
+                    else if(instruction.equals("DS")){
                         int size = Integer.parseInt(operand1);
                         locationCounter += size;
-                    } else {
-                        locationCounter++;
+                    }
+                    else {
+                        locationCounter += 1;
                     }
                 }
+
             }
 
-            // Print only the symbol table
             System.out.println("Symbol Table:");
-            for (String symbol : symbolTable.keySet()) {
-                System.out.println(symbol + " => " + symbolTable.get(symbol));
+            for(String symbol : symbolTable.keySet()){
+                System.out.println(symbol + " : " + symbolTable.get(symbol));
             }
 
+            
         } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
+            System.out.println(e);
         }
     }
 }
