@@ -24,21 +24,23 @@ public class MacroProcessorDirect {
 
                 if (tokens[0].equalsIgnoreCase("MACRO")) {
                     isMacroDefinition = true;
-                } else if (isMacroDefinition && !tokens[0].equalsIgnoreCase("MEND")) {
-                    // First line after MACRO is the macro name
-                    if (currentMacroName == null) {
-                        currentMacroName = tokens[0];
-                        currentMDTIndex = MDTC + 1;
-                        MNT.put(currentMacroName, currentMDTIndex);
+                } else if (isMacroDefinition) {
+                    if (tokens[0].equalsIgnoreCase("MEND")) {
+                        MDT.add("MEND");
+                        MDTC++;
+                        isMacroDefinition = false;
+                        currentMacroName = null;
+                    } else {
+                        if (currentMacroName == null) {
+                            currentMacroName = tokens[0];
+                            currentMDTIndex = MDTC + 1;
+                            MNT.put(currentMacroName, currentMDTIndex);
+                        }
+                        MDT.add(line);
+                        MDTC++;
                     }
-                    MDT.add(line);
-                    MDTC++;
-                } else if (tokens[0].equalsIgnoreCase("MEND")) {
-                    MDT.add("MEND");
-                    MDTC++;
-                    isMacroDefinition = false;
-                    currentMacroName = null;
                 }
+                
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

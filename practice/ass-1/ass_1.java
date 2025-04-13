@@ -30,6 +30,7 @@ public class ass_1 {
 
         HashMap<String, Integer> symbolTable = new HashMap<>();
         int locationCounter = 0;
+        List<String[]> intermediateCode = new ArrayList<>();
 
 
 
@@ -90,6 +91,7 @@ public class ass_1 {
                 }
 
                 if(opcodeTab.containsKey(instruction)){
+                    intermediateCode.add(new String[]{String.valueOf(locationCounter), instruction, operand1, operand2});
                     if(instruction.equals("DC")){
                         locationCounter += 1;
                     } 
@@ -107,6 +109,11 @@ public class ass_1 {
             System.out.println("Symbol Table:");
             for(String symbol : symbolTable.keySet()){
                 System.out.println(symbol + " : " + symbolTable.get(symbol));
+            }
+
+            System.out.println("intermediate Code:");
+            for(String[] entry : intermediateCode){
+                System.out.println(Arrays.toString(entry));
             }
 
             
