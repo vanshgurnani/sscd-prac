@@ -5,11 +5,14 @@
 
 %%
 [0-9]+  {yylval = atoi(yytext); return NUM;}
-['\n']  {return '\n';}
-[+\*-/()]  {return yytext[0];}
-[ \t]  ;
-.  { printf("Invalid character: %s\n", yytext); }
+[\n]    {return '\n';}
+[+\-*/()] {return yytext[0];}
+[ \t]       ;
+.           {printf("Unknown Character\n");};
+
 %%
+
+
 int yywrap(){
     return 1;
 }

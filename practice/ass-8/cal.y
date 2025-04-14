@@ -1,19 +1,19 @@
-%{ 
+%{  
 #include <stdio.h>
-#include <stdlib.h>    
+#include <stdlib.h>
 void yyerror(char *s);
-int yylex(void);
+int yylex(void);    
 %}
 
 %token NUM
+
 %left '+' '-'
 %left '*' '/'
 
-
 %%
-input:
-    | input line
-    ;
+input: 
+    | input line ;
+
 
 line: expr '\n' {printf("Result is: %d\n", $1);}
     ;
@@ -22,17 +22,15 @@ line: expr '\n' {printf("Result is: %d\n", $1);}
 expr: expr '+' expr {$$ = $1 + $3;}
     | expr '-' expr {$$ = $1 - $3;}
     | expr '*' expr {$$ = $1 * $3;}
-    | '(' expr ')'  {$$ = $2;}
-    | NUM           {$$ = $1;}
-    ;
-
+    | NUM;
 %%
 
-int main(){
-    printf("Enter an arithmetic epression: \n");
-    return yyparse();
-}
 
 void yyerror(char *s){
-    printf("ERROR: %s\n", s);
+    printf("syntax error: \n");
+}
+
+int main(){
+    printf("arithmetic Grammer is: \n");
+    return yyparse();
 }
