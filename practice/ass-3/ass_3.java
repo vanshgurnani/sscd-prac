@@ -3,7 +3,7 @@ import java.io.*;
 
 public class ass_3 {
 
-    private static final Map<String, Integer> MNT = new LinkedHashMap<>();
+    private static final Map<String, Integer> MNT = new HashMap<>();
     private static final List<String> MDT = new ArrayList<>();
     private static int mdtc = 0;
 
