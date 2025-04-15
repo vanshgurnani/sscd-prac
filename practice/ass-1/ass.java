@@ -66,8 +66,8 @@ public class ass {
                 } else {
                     label = tokens[0];
                     instruction = tokens[1];
-                    if (tokens.length > 2) operand1 = tokens[1];
-                    if (tokens.length > 3) operand2 = tokens[2];
+                    if (tokens.length > 2) operand1 = tokens[2];
+                    if (tokens.length > 3) operand2 = tokens[3];
                 }
 
                 if ("START".equals(instruction)){

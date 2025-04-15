@@ -31,7 +31,7 @@ public class MacroProcessorPass2 {
         try (BufferedReader br = new BufferedReader(new FileReader(alaFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                ALA.add(line.trim());
+                ALA.add(line);
             }
         }
 
@@ -59,7 +59,7 @@ public class MacroProcessorPass2 {
 
                 while (index < MDT.size()) {
                     String line = MDT.get(index);
-                    if (line.equalsIgnoreCase("MEND")) break;
+                    if (line.equals("MEND")) break;
 
                     for (String formalArg : ALA) {
                         line = line.replace(formalArg, actualArg);
